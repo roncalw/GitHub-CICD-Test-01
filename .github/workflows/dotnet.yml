@@ -18,3 +18,8 @@ jobs:
       run: dotnet publish --framework net5.0 --configuration Release --self-contained -r win10-x64
 
       
+    - name: Upload cfapp98 Build Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: cfapp98
+        path: D:\a\GitHub-CICD-Test-01\GitHub-CICD-Test-01\cfapp98\bin\Release\net5.0\win10-x64\publish\
