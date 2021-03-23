@@ -23,3 +23,20 @@ jobs:
       with:
         name: cfapp98
         path: D:\a\GitHub-CICD-Test-01\GitHub-CICD-Test-01\cfapp98\bin\Release\net5.0\win10-x64\publish\
+
+  deploy_local:
+    needs: build
+    runs-on: self-hosted
+ 
+    steps: 
+    - name: Prepare local folders
+      run: |
+        Remove-Item 'c:\pub\cfapp98_bak1' -Recurse -ErrorAction Ignore
+        Remove-Item 'c:\pub\cfapp98_bak' -Recurse -ErrorAction Ignore
+        ren c:\pub\cfapp98 cfapp98_bak
+        md c:\pub\cfapp98
+    - name: Download new binaries to the local app
+      uses: actions/download-artifact@v2
+      with:
+        name: cfapp98
+        path: c:\pub\cfapp98
