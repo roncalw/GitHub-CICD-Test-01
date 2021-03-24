@@ -35,8 +35,29 @@ jobs:
         Remove-Item 'c:\pub\cfapp98_bak' -Recurse -ErrorAction Ignore
         ren c:\pub\cfapp98 cfapp98_bak
         md c:\pub\cfapp98
+    
     - name: Download new binaries to the local app
       uses: actions/download-artifact@v2
       with:
         name: cfapp98
         path: c:\pub\cfapp98
+        
+  deploy_remote:
+    needs: deploy_local
+    runs-on: self-hosted 
+    environment:
+      name: GitHub-CICD-Test-01.Prod
+      
+    steps: 
+    - name: Prepare remote folders
+      run: |
+        Remove-Item '\\WIN2019DC03\c$\pub\cfapp98_bak1' -Recurse -ErrorAction Ignore
+        Remove-Item '\\WIN2019DC03\c$\pub\cfapp98_bak' -Recurse -ErrorAction Ignore
+        ren \\WIN2019DC03\c$\pub\cfapp98 cfapp98_bak
+        md \\WIN2019DC03\c$\pub\cfapp98
+
+    - name: Download new binaries to the remote app
+      uses: actions/download-artifact@v2
+      with:
+        name: cfapp98
+        path: \\WIN2019DC03\c$\pub\cfapp98
